@@ -1,7 +1,8 @@
-package com.example.demo.Model;
+package com.example.demo.Model.Cliente;
 
-public class cliente {
-    //INFORMAÇÕES TUTOR
+import java.util.List;
+
+public class Tutor {
     private int id;
     private String nomeTutor;
     private Number telefoneTutor;
@@ -11,14 +12,12 @@ public class cliente {
     private String cidade;
     private String estado;
     private String complemento;
-    //INFORMAÇÕES PET
-    private String nomePet;
-    private String racaPet;
-    private int idadePet;
-    private String portePet;
+    
+    // Lista de Pets, representando o relacionamento Um-para-Muitos (One-to-Many)
+    private List<Pet> pets;
 
-    public cliente (String nomeTutor, Number telefoneTutor, String cep, String logradouro, String bairro, String cidade, String estado, String complemento, String nomePet, String racaPet, int idadePet, String portePet){
-
+    // Construtor
+    public Tutor(String nomeTutor, Number telefoneTutor, String cep, String logradouro, String bairro, String cidade, String estado, String complemento) {
         this.nomeTutor = nomeTutor;
         this.telefoneTutor = telefoneTutor;
         this.cep = cep;
@@ -27,13 +26,9 @@ public class cliente {
         this.cidade = cidade;
         this.estado = estado;
         this.complemento = complemento;
-
-        this.nomePet = nomePet;
-        this.racaPet = racaPet;
-        this.idadePet = idadePet;
-        this.portePet = portePet;
     }
 
+    // Getters e Setters
     public int getId() {
         return id;
     }
@@ -106,36 +101,11 @@ public class cliente {
         this.complemento = complemento;
     }
 
-    public String getNomePet() {
-        return nomePet;
+    public List<Pet> getPets() {
+        return pets;
     }
 
-    public void setNomePet(String nomePet) {
-        this.nomePet = nomePet;
+    public void setPets(List<Pet> pets) {
+        this.pets = pets;
     }
-
-    public String getRacaPet() {
-        return racaPet;
-    }
-
-    public void setRacaPet(String racaPet) {
-        this.racaPet = racaPet;
-    }
-
-    public int getIdadePet() {
-        return idadePet;
-    }
-
-    public void setIdadePet(int idadePet) {
-        this.idadePet = idadePet;
-    }
-
-    public String getPortePet() {
-        return portePet;
-    }
-
-    public void setPortePet(String portePet) {
-        this.portePet = portePet;
-    }
-    
 }
