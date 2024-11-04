@@ -3,16 +3,20 @@ package com.example.demo.Service;
 import com.example.demo.Model.Cliente.Tutor;
 import com.example.demo.Model.Cliente.Pet;
 import com.example.demo.Repository.TutorRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class TutorService {
 
-    @Autowired
-    private TutorRepository tutorRepository;
+
+    private final TutorRepository tutorRepository;
+
 
     // Obter todos os tutores
     public List<Tutor> getAllTutores() {
@@ -20,22 +24,24 @@ public class TutorService {
     }
 
     // Obter um tutor pelo ID
-    public Tutor getTutorById(int id) {
-        return tutorRepository.findById(id).orElse(null);
+    public Optional<Tutor> getTutorById(Long id) {
+        return tutorRepository.findById(id);
     }
 
-    // Criar um novo tutor
-    public Tutor createTutor(Tutor tutor) {
+    // Criar ou atualizar um tutor
+    public Tutor salvarTutor(Tutor tutor) {
         return tutorRepository.save(tutor);
     }
 
     // Adicionar um pet a um tutor existente
-    public Tutor addPetToTutor(int id, Pet pet) {
-        Tutor tutor = tutorRepository.findById(id).orElse(null);
-        if (tutor != null) {
+    public Optional<Tutor> addPetToTutor(Long id, Pet pet) {
+        return tutorRepository.findById(id).map(tutor -> {
             tutor.getPets().add(pet);
             return tutorRepository.save(tutor);
-        }
-        return null;
+        });
+    }
+
+    public void deleteTutor(Long id) {
+        tutorRepository.deleteById(id);
     }
 }

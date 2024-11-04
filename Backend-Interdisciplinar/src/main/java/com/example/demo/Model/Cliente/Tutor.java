@@ -1,23 +1,34 @@
 package com.example.demo.Model.Cliente;
 
+import jakarta.persistence.*;
 import java.util.List;
 
+@Entity
 public class Tutor {
-    private int id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String nomeTutor;
-    private Number telefoneTutor;
+    private String telefoneTutor; // Modificado para String para facilitar o mapeamento
     private String cep;
     private String logradouro;
     private String bairro;
     private String cidade;
     private String estado;
     private String complemento;
-    
+
     // Lista de Pets, representando o relacionamento Um-para-Muitos (One-to-Many)
+    @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pet> pets;
 
-    // Construtor
-    public Tutor(String nomeTutor, Number telefoneTutor, String cep, String logradouro, String bairro, String cidade, String estado, String complemento) {
+    // Construtor padrão necessário para o JPA
+    public Tutor() {
+    }
+
+    // Construtor com parâmetros
+    public Tutor(String nomeTutor, String telefoneTutor, String cep, String logradouro, String bairro, String cidade, String estado, String complemento) {
         this.nomeTutor = nomeTutor;
         this.telefoneTutor = telefoneTutor;
         this.cep = cep;
@@ -29,11 +40,11 @@ public class Tutor {
     }
 
     // Getters e Setters
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -45,11 +56,11 @@ public class Tutor {
         this.nomeTutor = nomeTutor;
     }
 
-    public Number getTelefoneTutor() {
+    public String getTelefoneTutor() {
         return telefoneTutor;
     }
 
-    public void setTelefoneTutor(Number telefoneTutor) {
+    public void setTelefoneTutor(String telefoneTutor) {
         this.telefoneTutor = telefoneTutor;
     }
 

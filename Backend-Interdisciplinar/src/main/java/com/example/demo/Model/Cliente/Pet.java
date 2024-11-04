@@ -1,19 +1,28 @@
 package com.example.demo.Model.Cliente;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+@Entity
 public class Pet {
+
     @Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
     private String nomePet;
     private String racaPet;
     private int idadePet;
     private String portePet;
 
-    // Construtor
+    @ManyToOne
+    @JoinColumn(name = "tutor_id", nullable = false)
+    private Tutor tutor;
+
+    // Construtor padrão necessário para o JPA
+    public Pet() {
+    }
+
+    // Construtor com parâmetros
     public Pet(String nomePet, String racaPet, int idadePet, String portePet) {
         this.nomePet = nomePet;
         this.racaPet = racaPet;
@@ -22,11 +31,11 @@ public class Pet {
     }
 
     // Getters e Setters
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -60,5 +69,13 @@ public class Pet {
 
     public void setPortePet(String portePet) {
         this.portePet = portePet;
+    }
+
+    public Tutor getTutor() {
+        return tutor;
+    }
+
+    public void setTutor(Tutor tutor) {
+        this.tutor = tutor;
     }
 }
