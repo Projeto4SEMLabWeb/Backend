@@ -1,10 +1,10 @@
 package com.example.demo.Controller;
 
-import com.example.demo.Model.Cliente.Tutor;
 import com.example.demo.Model.Cliente.Pet;
+import com.example.demo.Model.Cliente.Tutor;
+import com.example.demo.Service.PetService;
 import com.example.demo.Service.TutorService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,14 +17,16 @@ import java.util.Optional;
 public class TutorController {
 
     private final TutorService tutorService;
+    private final PetService petService;
 
-    // Endpoint para listar todos os tutores
+
+    // LISTAR TODOS OS CLIENTES
     @GetMapping
-    public List<Tutor> getAllTutores() {
-        return tutorService.getAllTutores();
+    public List<Tutor> listar() {
+        return tutorService.listar();
     }
 
-    // Endpoint para obter um tutor específico pelo ID
+    // LISTAR TUTOR PELO ID
     @GetMapping("/{id}")
     public ResponseEntity<Tutor> getTutorById(@PathVariable Long id) {
         Optional<Tutor> tutor = tutorService.getTutorById(id);
@@ -32,22 +34,28 @@ public class TutorController {
                     .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Endpoint para criar um novo tutor com pets
+    // CADASTRAR TUTOR
     @PostMapping
     public ResponseEntity<Tutor> createTutor(@RequestBody Tutor tutor) {
-        Tutor novoTutor = tutorService.salvarTutor(tutor);
+        Tutor novoTutor = tutorService.salvar(tutor);
         return ResponseEntity.ok(novoTutor);
     }
 
-    // Endpoint para adicionar um pet a um tutor existente
+    // CADASTRAR PET AO TUTOR
     @PostMapping("/{id}/pets")
     public ResponseEntity<Tutor> addPetToTutor(@PathVariable Long id, @RequestBody Pet pet) {
-        Optional<Tutor> updatedTutor = tutorService.addPetToTutor(id, pet);
-        return updatedTutor.map(ResponseEntity::ok)
-                           .orElseGet(() -> ResponseEntity.notFound().build());
+        Optional<Tutor> optionalTutor = tutorService.getTutorById(id);
+        if (optionalTutor.isPresent()) {
+            Tutor tutor = optionalTutor.get();
+            pet.setTutor(tutor); // Atribuindo o tutor ao pet
+            Pet novoPet = petService.salvar(pet);
+            return ResponseEntity.ok(tutor);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    // Endpoint para obter todos os pets de um tutor específico
+    // LISTAR PETS DE UM TUTOR ESPECÍFICO
     @GetMapping("/{id}/pets")
     public ResponseEntity<List<Pet>> getPetsByTutor(@PathVariable Long id) {
         Optional<Tutor> tutor = tutorService.getTutorById(id);
@@ -55,25 +63,25 @@ public class TutorController {
                     .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Endpoint para atualizar um tutor existente
+    // ATUALIZAR CLIENTE
     @PutMapping("/{id}")
     public ResponseEntity<Tutor> updateTutor(@PathVariable Long id, @RequestBody Tutor tutorAtualizado) {
-        Optional<Tutor> tutorExistente = tutorService.getTutorById(id);
-        if (tutorExistente.isPresent()) {
-            tutorAtualizado.setId(id); // Garantindo que o ID do tutor seja o mesmo
-            Tutor tutorSalvo = tutorService.salvarTutor(tutorAtualizado);
+        try {
+            Tutor tutorSalvo = tutorService.atualizar(id, tutorAtualizado);
             return ResponseEntity.ok(tutorSalvo);
-        } else {
+        } catch (Exception e) {
+            // Retorna 404 se o tutor não for encontrado
             return ResponseEntity.notFound().build();
         }
     }
  
-    // Endpoint para excluir um tutor
+    // EXCLUIR TUTOR
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTutor(@PathVariable Long id) {
         Optional<Tutor> tutor = tutorService.getTutorById(id);
         if (tutor.isPresent()) {
-            tutorService.deleteTutor(id); // Método que você deve implementar no serviço
+            // O JPA irá cuidar da exclusão dos pets associados devido ao orphanRemoval = true
+            tutorService.deleteTutor(id);
             return ResponseEntity.noContent().build(); // Retorna 204 No Content
         } else {
             return ResponseEntity.notFound().build();

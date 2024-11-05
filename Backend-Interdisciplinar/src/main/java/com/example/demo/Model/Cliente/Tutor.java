@@ -1,5 +1,6 @@
 package com.example.demo.Model.Cliente;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class Tutor {
 
     // Lista de Pets, representando o relacionamento Um-para-Muitos (One-to-Many)
     @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Pet> pets;
 
     // Construtor padrão necessário para o JPA

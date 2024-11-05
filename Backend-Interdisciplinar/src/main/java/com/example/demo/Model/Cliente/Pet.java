@@ -1,5 +1,6 @@
 package com.example.demo.Model.Cliente;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -16,6 +17,7 @@ public class Pet {
 
     @ManyToOne
     @JoinColumn(name = "tutor_id", nullable = false)
+    @JsonIgnore
     private Tutor tutor;
 
     // Construtor padrão necessário para o JPA
