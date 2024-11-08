@@ -12,7 +12,7 @@ public class Tutor {
     private Long id;
 
     private String nomeTutor;
-    private String telefoneTutor; // Modificado para String para facilitar o mapeamento
+    private String telefoneTutor;
     private String cep;
     private String logradouro;
     private String bairro;
@@ -22,7 +22,7 @@ public class Tutor {
 
     // Lista de Pets, representando o relacionamento Um-para-Muitos (One-to-Many)
     @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference  // Mantenha apenas @JsonManagedReference aqui
     private List<Pet> pets;
 
     // Construtor padrão necessário para o JPA

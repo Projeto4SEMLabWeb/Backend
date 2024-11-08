@@ -1,6 +1,7 @@
+
 package com.example.demo.Model.Cliente;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -9,7 +10,7 @@ public class Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     private String nomePet;
     private String racaPet;
     private int idadePet;
@@ -17,12 +18,8 @@ public class Pet {
 
     @ManyToOne
     @JoinColumn(name = "tutor_id", nullable = false)
-    @JsonIgnore
+    @JsonBackReference  // Apenas @JsonBackReference aqui
     private Tutor tutor;
-
-    // Construtor padrão necessário para o JPA
-    public Pet() {
-    }
 
     // Construtor com parâmetros
     public Pet(String nomePet, String racaPet, int idadePet, String portePet) {

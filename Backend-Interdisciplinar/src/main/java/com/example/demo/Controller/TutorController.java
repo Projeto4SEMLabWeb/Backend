@@ -41,6 +41,7 @@ public class TutorController {
         return ResponseEntity.ok(novoTutor);
     }
 
+
     // CADASTRAR PET AO TUTOR
     @PostMapping("/{id}/pets")
     public ResponseEntity<Tutor> addPetToTutor(@PathVariable Long id, @RequestBody Pet pet) {
