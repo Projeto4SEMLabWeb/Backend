@@ -21,6 +21,10 @@ public class Pet {
     @JsonBackReference  // Apenas @JsonBackReference aqui
     private Tutor tutor;
 
+    public Pet(){
+
+    }
+
     // Construtor com parâmetros
     public Pet(String nomePet, String racaPet, int idadePet, String portePet) {
         this.nomePet = nomePet;
