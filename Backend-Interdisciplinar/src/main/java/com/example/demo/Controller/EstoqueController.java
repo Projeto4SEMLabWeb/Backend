@@ -20,6 +20,12 @@ public class EstoqueController {
     public ResponseEntity<List<Estoque>> getAll(){
       return service.getAll();
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<Estoque> getById(@PathVariable Long id) {
+        Estoque estoque = new Estoque();
+        estoque.setId(id);
+        return service.findById(estoque);
+    }
     @PostMapping()
     public ResponseEntity<Estoque> create(@RequestBody Estoque estoque){
 

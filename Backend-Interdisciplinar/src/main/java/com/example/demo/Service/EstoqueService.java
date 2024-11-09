@@ -33,6 +33,13 @@ public class EstoqueService {
         }
             return ResponseEntity.notFound().build();
     }
+    public ResponseEntity<Estoque> findById(Estoque estoque){
+        Optional<Estoque> estoque1 = estoqueRepository.findById(estoque.getId());
+        if(estoque1.isPresent()){
+            return ResponseEntity.ok().body(estoque1.get());
+        }
+        return  ResponseEntity.notFound().build();
+    }
 
 
 }
