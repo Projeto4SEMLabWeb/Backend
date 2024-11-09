@@ -15,6 +15,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -36,13 +43,16 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
+                .cors(withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/login/logar").permitAll()
                         .requestMatchers(HttpMethod.POST, "/login/cadastro").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/login/teste").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "/login/verifica").hasRole("USER")
                         .anyRequest().authenticated())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(filterToken, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+
+
 }

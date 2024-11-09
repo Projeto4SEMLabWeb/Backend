@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Optional;
 
 @Service
 public class TokenService {
@@ -21,10 +22,10 @@ public class TokenService {
                 .sign(Algorithm.HMAC256(secretKey));
     }
 
-    public String getSubject(String token) {
+    public Optional<String> getSubject(String token) {
         token = token.replace("Bearer ", "");
         return JWT.require(Algorithm.HMAC256(secretKey))
-                .build().verify(token).getSubject();
+                .build().verify(token).getSubject().describeConstable();
     }
 
     public String getClaimId(String token) {
