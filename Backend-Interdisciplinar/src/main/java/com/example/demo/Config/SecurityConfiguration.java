@@ -23,6 +23,8 @@ import java.util.Arrays;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
@@ -48,6 +50,10 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/login/logar").permitAll()
                         .requestMatchers(HttpMethod.POST, "/login/cadastro").permitAll()
                         .requestMatchers(HttpMethod.GET, "/login/verifica").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "/estoque").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/estoque").hasRole("USER")
+                        .requestMatchers(HttpMethod.PUT, "/estoque").hasRole("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/estoque/**").hasRole("USER")
                         .anyRequest().authenticated())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(filterToken, UsernamePasswordAuthenticationFilter.class)
