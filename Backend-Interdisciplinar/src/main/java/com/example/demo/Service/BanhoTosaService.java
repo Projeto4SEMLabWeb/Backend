@@ -30,7 +30,7 @@ public class BanhoTosaService {
 
     public ResponseEntity<BanhoTosa> delete (BanhoTosa banhoTosa){
         repository.delete(banhoTosa);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(banhoTosa);
     }
 
     public ResponseEntity<BanhoTosa> findById(BanhoTosa banhoTosa){

@@ -28,8 +28,7 @@ public class EstoqueService {
     public ResponseEntity<Estoque> update(Estoque estoque){
         Optional<Estoque> optionalEstoque = estoqueRepository.findById(estoque.getId());
         if(optionalEstoque.isPresent()){
-            estoqueRepository.save(estoque);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok().body(estoqueRepository.save(estoque));
         }
             return ResponseEntity.notFound().build();
     }
